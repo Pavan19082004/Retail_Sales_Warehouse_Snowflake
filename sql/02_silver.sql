@@ -11,7 +11,13 @@ SELECT
     ss.ss_quantity,
     ss.ss_sales_price
 FROM BRONZE.STORE_SALES_RAW ss
-where ss_sales_price is not null and ss_quantity >0;
+join snowflake_sample_data.tpcds_sf100tcl.date_dim d
+on ss.ss_sold_date_sk=d.d_date_sk
+where d.d_year between 1998 and 1999
+and ss.ss_sales_price is not null 
+and ss.ss_quantity >0;
+
+-- where ss_sales_price is not null and ss_quantity >0;
 
 -- join SNOWFLAKE_SAMPLE_DATA.TPCDS_SF100TCL.DATE_DIM dd
 -- on ss.ss_sold_date_sk = dd.d_date_sk
@@ -21,3 +27,10 @@ where ss_sales_price is not null and ss_quantity >0;
 select min(ss_sales_price) as min_sales_price, max(ss_sales_price) as max_sales_price from SILVER.STORE_SALES_CLEAN;
 
 SELECT COUNT(*) AS TOTAL_RECORDS FROM SILVER.STORE_SALES_CLEAN;
+
+select count(*) from bronze.store_sales_raw;
+select count(*) from silver.store_sales_clean;
+
+select count(*)
+ from silver.store_sales_clean 
+ where ss_quantity <=0;
