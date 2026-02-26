@@ -9,7 +9,7 @@ use database snowflake_learning_db;
 
 create schema if not exists bronze;
 
-use schema bronze;
+-- use schema bronze;
 
 create or replace table bronze.store_sales_raw as
 select *
